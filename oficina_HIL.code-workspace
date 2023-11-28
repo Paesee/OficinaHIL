@@ -1,0 +1,40 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+  ],
+  "settings": {
+    "files.associations": {
+      "cstdint": "cpp",
+      "compare": "c",
+      "stdint.h": "c",
+      "optional": "c",
+      "system_error": "c",
+      "array": "c",
+      "functional": "c",
+      "tuple": "c",
+      "type_traits": "c",
+      "utility": "c",
+      "grid_following_inverter.h": "c",
+      "grid_forming_inverter.h": "c",
+      "shape.h": "c",
+      "bit": "cpp",
+      "complex": "cpp",
+      "concepts": "cpp",
+      "cmath": "cpp",
+      "limits": "cpp",
+      "new": "cpp",
+      "sstream": "cpp",
+      "teste.h": "c",
+      "random": "c",
+      "sogi_qsg.h": "c",
+      "string_view": "c",
+      "initializer_list": "c",
+      "grid_following.h": "c",
+      "grid_forming.h": "c",
+      "microgrid.h": "c",
+      "math.h": "c"
+    }
+  }
+}
