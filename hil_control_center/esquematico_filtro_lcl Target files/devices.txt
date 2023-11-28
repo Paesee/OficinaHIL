@@ -1,0 +1,131 @@
+ks23+hRtoDnTXZaTKLySUDQu0g0GXlcujxYG1ewZcuha7D5NMB89ezZu14vW0x1ltPoK5WHT7zxRyljd2vyAQQ==
+{
+  "compilation_timestamp": "2023-11-27 22:08:31",
+  "sw_version": "2023.4",
+  "devices": [
+    {
+      "device_type": "HIL402",
+      "hw_id": "e1bd118954f2ec2f0fce67afdebb958a66ca2ca0dcb167732210705817d0b88f",
+      "activation_key": "WS765-NHC2Z-XUMJE-FYLT1-61976",
+      "serial_no": "00402-02-00260",
+      "license_expiry": "2118-10-28",
+      "maintenance_expiry": null,
+      "access_type": "Full",
+      "paralleling": "Master",
+      "not_supported": null,
+      "toolboxes": [
+        {
+          "name": "Ethernet Variable Exchange",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "Power Systems",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "Modbus Protocol",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "IEC61850 Protocols",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "Virtual HIL Device",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "CAN bus",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "Power Loss Calculation",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "SIL Support",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "Microgrid Library",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "DNP3 Protocol",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "Nonlinear Machines",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "TyphoonTest",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "C37.118 Protocol",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "EtherCAT Protocol",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "SFP Simulation Link",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "PROFINET Protocol",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "ISO 15118 Protocol",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        },
+        {
+          "name": "IEC 60870 Protocol",
+          "license_expiry": "2118-12-23",
+          "maintenance_expiry": null,
+          "not_supported": null
+        }
+      ]
+    }
+  ]
+}
+-----BEGIN SIGNATURE-----
+WqXkwhd5ibfj5uthqz66UcQFX9WSGOuYRXj/ALvl+/GrU86dambpzwRrhqHLgMeh3tmRWQe5pLaZ1IJy8PtCK2QgcsRmTGk2R1fB5yIAeeggrpvG4295TWbwHqceLsilfyUDCyCMCoN6QGggrQbKKcE7cJ3rDdqTjR5toPWQf/ZWqFEYpfdzZ4EmGxUBJBwRO+2CC3FyS666sLdfd1myQ4wvcoUrR0DbHY1kzcZVh1k5m2yRYBnD2h4gKco8Gi4txbvpBFM25LeGK9vIIMLg65o7mGKPCydNP68hnB9mEDdrhqHEJ6Ns9tCecueXETfkwoUUw8PwgQbPOMahkwsnBw==
+-----END SIGNATURE-----

@@ -1,0 +1,1117 @@
+version = 4.2
+
+//
+// Saved by sw version: 2023.4
+//
+
+model "esquematico_filtro_lcl" {
+    configuration {
+        hil_device = "HIL402"
+        hil_configuration_id = 1
+        simulation_method = exact
+        simulation_time_step = auto
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_analog_outputs_on_sim_stop_mode = Offset values
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = False
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        excluded_resource_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+        dae_solver = "BDF"
+        max_sim_step = 1e-4
+        simulation_time = 1.0
+        abs_tol = 1e-3
+        rel_tol = 1e-3
+        init_sim_step = 1e-6
+        r_on_sw = 1e-3
+        v_on_diode = 0.2
+        data_sampling_rate = 0
+        feedthrough_validation_error_level = error
+    }
+
+    component Subsystem Root {
+        component "core/Signal Controlled Voltage Source" Vcc {
+        }
+        [
+            position = 9016, 7448
+            rotation = right
+            size = 64, 32
+        ]
+
+        component "core/Inductor" L1 {
+        }
+        [
+            position = 9088, 7272
+        ]
+
+        component "core/Resistor" R1 {
+            resistance = "0.5"
+        }
+        [
+            position = 9184, 7272
+        ]
+
+        component "core/Capacitor" C1 {
+            capacitance = "44e-6"
+            signal_access = "Inherit"
+        }
+        [
+            position = 9344, 7448
+            rotation = right
+        ]
+
+        component "core/Current Measurement" Il1 {
+            execution_rate = "TS"
+            sig_output = "True"
+            signal_access = "Inherit"
+        }
+        [
+            position = 9272, 7272
+            size = 64, 32
+        ]
+
+        component "core/Resistor" Rl1 {
+            resistance = "100"
+        }
+        [
+            position = 9768, 7448
+            rotation = right
+        ]
+
+        component "core/Voltage Measurement" Vc {
+            execution_rate = "TS"
+            feed_forward = "true"
+            sig_output = "True"
+            signal_access = "Inherit"
+        }
+        [
+            position = 9424, 7448
+            rotation = right
+            size = 64, 32
+        ]
+
+        component "core/Single Pole Single Throw Contactor" S1 {
+            ctrl_src = "Model"
+            signal_access = "Inherit"
+        }
+        [
+            position = 9768, 7352
+            rotation = right
+            size = 64, 32
+        ]
+
+        component "core/Current Measurement" Iload {
+            execution_rate = "TS"
+            sig_output = "True"
+            signal_access = "Inherit"
+        }
+        [
+            position = 9488, 7272
+            size = 64, 32
+        ]
+
+        component "core/Resistor" Rl2 {
+            resistance = "100"
+        }
+        [
+            position = 9920, 7448
+            rotation = right
+        ]
+
+        component "core/Single Pole Single Throw Contactor" S2 {
+            ctrl_src = "Model"
+            signal_access = "Inherit"
+        }
+        [
+            position = 9920, 7352
+            rotation = right
+            size = 64, 32
+        ]
+
+        component "core/Resistor" Rl3 {
+            resistance = "0.1"
+        }
+        [
+            position = 10072, 7448
+            rotation = right
+        ]
+
+        component "core/Single Pole Single Throw Contactor" S3 {
+            ctrl_src = "Model"
+            signal_access = "Inherit"
+        }
+        [
+            position = 10072, 7352
+            rotation = right
+            size = 64, 32
+        ]
+
+        component "core/Ground" gnd1 {
+        }
+        [
+            position = 9016, 7536
+        ]
+
+        component "core/C function" "Controlador PID" {
+            arb_defs = "/*Begin code section*/
+struct GeneralPID
+{
+  // setpoint for control routine
+  float setpoint;
+  // sampling time
+  float sampling_time;
+  // PID gains
+  float KP;
+  float KI;
+  float KD;
+  // Gains definition
+  float K1;
+  float K2;
+  float K3;
+  float K1_anti_windup;
+  float K2_anti_windup;
+  float K3_anti_windup;
+  // variables used to store past erros and outputs
+  float error_n1;
+  float error_n2;
+  float output_n1;
+  float output_n2;
+  // max output values
+  float max_output;
+  float min_output;
+};
+
+struct GeneralPID pid;
+    
+float acao_calculada = 0;
+/*End code section*/"
+            dll_file_path = "..\lib\libGeneralPID.dll"
+            dll_file_path_full = "C:/projetos/oficina_hil/lib/libGeneralPID.dll"
+            execution_rate = "TS"
+            h_file_path = "..\src\GeneralPID.h"
+            h_file_path_full = "C:/projetos/oficina_hil/src/GeneralPID.h"
+            init_fnc = "/*Begin code section*/
+PID_init(&pid, 0.0001, 0, 0, 0);
+PID_setMatlabGains(&pid,  0.3062, -0.3698, 0.08393);
+//PID_setMatlabGains(&pid, 0.4229, -0.7091, 0.2867);
+PID_setBoundaries(&pid, 100, -100);
+acao_calculada = 0;
+/*End code section*/"
+            input_terminals = "real in_vref;real in_vc;real in_enabled;inherit in_kp;inherit in_ki;inherit in_kd;"
+            input_terminals_dimensions = "1;1;inherit;inherit;inherit;inherit"
+            input_terminals_feedthrough = "True;True;True;True;True;True"
+            input_terminals_show_labels = "False;False;False;False;False;False"
+            output_fnc = "/*Begin code section*/
+if(in_enabled){
+    // Para mudar a referencia do controlador
+    PID_setSetpoint(&pid, in_vref);
+    // Para mudar os ganhos do controlador
+    //PID_setGains(&pid, in_kp, in_ki, in_kd);
+    // Calcula a acao de controle
+    acao_calculada = PID_execute(&pid, in_vc);
+    // Atribui a acao de controle para a saida
+    out_acao_controle = acao_calculada;
+}else{
+    out_acao_controle = 0;
+}
+/*End code section*/"
+            output_terminals = "real out_acao_controle;"
+            output_terminals_dimensions = "inherit"
+            output_terminals_feedthrough = "True"
+            output_terminals_show_labels = "False"
+        }
+        [
+            position = 9568, 7704
+            size = 184, 312
+        ]
+
+        component "core/SCADA Input" SCADA_s1 {
+            execution_rate = "TS_scada"
+            unit = ""
+        }
+        [
+            position = 8272, 7376
+        ]
+
+        component "core/SCADA Input" SCADA_s2 {
+            execution_rate = "TS_scada"
+            unit = ""
+        }
+        [
+            position = 8272, 7488
+        ]
+
+        component "core/SCADA Input" SCADA_s3 {
+            execution_rate = "TS_scada"
+            unit = ""
+        }
+        [
+            position = 8272, 7600
+        ]
+
+        component "core/Probe" SYS_vc {
+        }
+        [
+            position = 8608, 7128
+        ]
+
+        component "core/Probe" SYS_il1 {
+        }
+        [
+            position = 8608, 7192
+        ]
+
+        component "core/Probe" SYS_iload {
+        }
+        [
+            position = 8608, 7256
+        ]
+
+        component "core/Digital Probe" FEEDBACK_s3 {
+        }
+        [
+            position = 8608, 7544
+        ]
+
+        component "core/Digital Probe" FEEDBACK_s2 {
+        }
+        [
+            position = 8608, 7432
+        ]
+
+        component "core/Digital Probe" FEEDBACK_s1 {
+        }
+        [
+            position = 8608, 7320
+        ]
+
+        component "core/Rate Transition" "Rate Transition1" {
+            execution_rate = "TS"
+        }
+        [
+            position = 9392, 7584
+            size = 32, 32
+        ]
+
+        component "core/Rate Transition" "Rate Transition2" {
+            execution_rate = "TS"
+        }
+        [
+            position = 9392, 7680
+            size = 32, 32
+        ]
+
+        component "core/Resistor" Rl0 {
+            resistance = "100"
+        }
+        [
+            position = 9664, 7448
+            rotation = right
+        ]
+
+        component "core/SCADA Input" SCADA_enable {
+            execution_rate = "TS_scada"
+            unit = ""
+        }
+        [
+            position = 8272, 7712
+        ]
+
+        component "core/Digital Probe" FEEDBACK_enable {
+        }
+        [
+            position = 8608, 7656
+        ]
+
+        component "core/SCADA Input" SCADA_SP_trigger {
+            execution_rate = "TS"
+            unit = ""
+        }
+        [
+            position = 8264, 7056
+        ]
+
+        component "core/Digital Probe" FEEDBACK_SP_trigger {
+            execution_rate = "TS"
+            signal_access = "Inherit"
+        }
+        [
+            position = 8608, 7056
+        ]
+
+        component "core/SCADA Input" SCADA_vref {
+            execution_rate = "TS"
+            unit = ""
+        }
+        [
+            position = 8264, 7840
+        ]
+
+        component "core/Probe" FEEDBACK_vref {
+        }
+        [
+            position = 8600, 7768
+        ]
+
+        component "core/SCADA Input" SCADA_kd {
+            execution_rate = "TS"
+            unit = ""
+        }
+        [
+            position = 8264, 8248
+        ]
+
+        component "core/Digital Probe" FEEDBACK_kd {
+            execution_rate = "TS"
+            signal_access = "Inherit"
+        }
+        [
+            position = 8608, 8176
+        ]
+
+        component "core/SCADA Input" SCADA_ki {
+            execution_rate = "TS"
+            unit = ""
+        }
+        [
+            position = 8264, 8112
+        ]
+
+        component "core/Digital Probe" FEEDBACK_ki {
+            execution_rate = "TS"
+            signal_access = "Inherit"
+        }
+        [
+            position = 8600, 8040
+        ]
+
+        component "core/SCADA Input" SCADA_kp {
+            execution_rate = "TS"
+            unit = ""
+        }
+        [
+            position = 8264, 7984
+        ]
+
+        component "core/Digital Probe" FEEDBACK_kp {
+            execution_rate = "TS"
+            signal_access = "Inherit"
+        }
+        [
+            position = 8608, 7912
+        ]
+
+        component "core/Probe" FEEDBACK_acao {
+        }
+        [
+            position = 9760, 7632
+        ]
+
+        tag Goto1 {
+            value = "IL1"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 9328, 7232
+            size = 60, 20
+        ]
+
+        tag Goto2 {
+            value = "ILOAD"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 9544, 7232
+            size = 60, 20
+        ]
+
+        tag Goto3 {
+            value = "VC"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 9544, 7448
+            size = 60, 20
+        ]
+
+        tag From1 {
+            value = "S1"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 9840, 7352
+            rotation = down
+            size = 60, 20
+        ]
+
+        tag From2 {
+            value = "S2"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 9992, 7352
+            rotation = down
+            size = 60, 20
+        ]
+
+        tag From3 {
+            value = "S3"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 10144, 7352
+            rotation = down
+            size = 60, 20
+        ]
+
+        tag Goto4 {
+            value = "V_CONTROL"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 9744, 7704
+            size = 60, 20
+        ]
+
+        tag From4 {
+            value = "V_CONTROL"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 9184, 7448
+            rotation = down
+            size = 60, 20
+        ]
+
+        tag Goto5 {
+            value = "S3"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8592, 7600
+            size = 60, 20
+        ]
+
+        tag Goto6 {
+            value = "S2"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8592, 7488
+            size = 60, 20
+        ]
+
+        tag Goto7 {
+            value = "S1"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8592, 7376
+            size = 60, 20
+        ]
+
+        tag From5 {
+            value = "IL1"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8280, 7192
+            size = 60, 20
+        ]
+
+        tag From6 {
+            value = "VC"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8280, 7128
+            size = 60, 20
+        ]
+
+        tag From7 {
+            value = "ILOAD"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8280, 7256
+            size = 60, 20
+        ]
+
+        tag From9 {
+            value = "VC"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 9312, 7632
+            size = 60, 20
+        ]
+
+        tag Goto8 {
+            value = "ENABLE"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8592, 7712
+            size = 60, 20
+        ]
+
+        tag From10 {
+            value = "ENABLE"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 9312, 7680
+            size = 60, 20
+        ]
+
+        tag Goto9 {
+            value = "VREF"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8592, 7840
+            size = 60, 20
+        ]
+
+        tag From11 {
+            value = "VREF"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 9312, 7584
+            size = 60, 20
+        ]
+
+        tag Goto10 {
+            value = "KP"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8592, 7984
+            size = 60, 20
+        ]
+
+        tag Goto11 {
+            value = "KI"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8592, 8112
+            size = 60, 20
+        ]
+
+        tag Goto12 {
+            value = "KD"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8592, 8248
+            size = 60, 20
+        ]
+
+        tag From12 {
+            value = "KP"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 9312, 7728
+            size = 60, 20
+        ]
+
+        tag From13 {
+            value = "KI"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 9312, 7776
+            size = 60, 20
+        ]
+
+        tag From14 {
+            value = "KD"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 9312, 7824
+            size = 60, 20
+        ]
+
+        junction Junction1 pe
+        [
+            position = 9344, 7272
+        ]
+
+        junction Junction2 pe
+        [
+            position = 9424, 7272
+        ]
+
+        junction Junction3 pe
+        [
+            position = 9344, 7504
+        ]
+
+        junction Junction4 pe
+        [
+            position = 9424, 7504
+        ]
+
+        junction Junction5 pe
+        [
+            position = 9768, 7504
+        ]
+
+        junction Junction6 pe
+        [
+            position = 9920, 7504
+        ]
+
+        junction Junction7 pe
+        [
+            position = 9768, 7272
+        ]
+
+        junction Junction8 pe
+        [
+            position = 9920, 7272
+        ]
+
+        junction Junction9 pe
+        [
+            position = 9016, 7504
+        ]
+
+        junction Junction10 sp
+        [
+            position = 8536, 7600
+        ]
+
+        junction Junction11 sp
+        [
+            position = 8536, 7488
+        ]
+
+        junction Junction12 sp
+        [
+            position = 8536, 7376
+        ]
+
+        junction Junction13 pe
+        [
+            position = 9664, 7504
+        ]
+
+        junction Junction14 pe
+        [
+            position = 9664, 7272
+        ]
+
+        junction Junction15 sp
+        [
+            position = 8536, 7712
+        ]
+
+        junction Junction16 sp
+        [
+            position = 8536, 7840
+        ]
+
+        junction Junction17 sp
+        [
+            position = 8536, 8112
+        ]
+
+        junction Junction18 sp
+        [
+            position = 8536, 8248
+        ]
+
+        junction Junction19 sp
+        [
+            position = 8536, 7984
+        ]
+
+        junction Junction20 sp
+        [
+            position = 9688, 7704
+        ]
+
+        connect Vcc.p_node L1.p_node as Connection1
+        connect L1.n_node R1.p_node as Connection2
+        connect R1.n_node Il1.p_node as Connection3
+        connect C1.p_node Junction1 as Connection5
+        connect Junction1 Il1.n_node as Connection6
+        connect Iload.p_node Junction2 as Connection8
+        connect Junction2 Junction1 as Connection9
+        connect Vc.p_node Junction2 as Connection10
+        connect Junction3 C1.n_node as Connection13
+        [
+            breakpoints = 9344, 7504
+        ]
+        connect S1.a_out Rl1.p_node as Connection16
+        connect Vc.n_node Junction4 as Connection17
+        connect Junction4 Junction3 as Connection18
+        connect S2.a_out Rl2.p_node as Connection20
+        connect S3.a_out Rl3.p_node as Connection21
+        connect Rl1.n_node Junction5 as Connection22
+        connect Rl2.n_node Junction6 as Connection25
+        connect Junction6 Junction5 as Connection26
+        connect Rl3.n_node Junction6 as Connection27
+        connect Junction7 S1.a_in as Connection29
+        connect S2.a_in Junction8 as Connection31
+        connect Junction8 Junction7 as Connection32
+        connect S3.a_in Junction8 as Connection33
+        connect Vcc.n_node Junction9 as Connection34
+        connect Junction9 Junction3 as Connection35
+        [
+            breakpoints = 9016, 7504
+        ]
+        connect gnd1.node Junction9 as Connection36
+        connect Goto1 Il1.out as Connection37
+        connect Iload.out Goto2 as Connection38
+        connect Goto3 Vc.out as Connection39
+        connect From1 S1.ctrl_in as Connection41
+        connect From2 S2.ctrl_in as Connection42
+        connect From3 S3.ctrl_in as Connection43
+        connect From4 Vcc.in as Connection46
+        connect From6 SYS_vc.in as Connection50
+        connect From5 SYS_il1.in as Connection51
+        connect From7 SYS_iload.in as Connection52
+        connect Goto5 Junction10 as Connection53
+        connect Junction10 SCADA_s3.out as Connection54
+        connect FEEDBACK_s3.in Junction10 as Connection55
+        connect Goto6 Junction11 as Connection56
+        connect Junction11 SCADA_s2.out as Connection57
+        connect FEEDBACK_s2.in Junction11 as Connection58
+        [
+            breakpoints = 8536, 7432; 8536, 7488
+        ]
+        connect Goto7 Junction12 as Connection59
+        connect Junction12 SCADA_s1.out as Connection60
+        connect FEEDBACK_s1.in Junction12 as Connection61
+        [
+            breakpoints = 8536, 7320; 8536, 7376
+        ]
+        connect From9 "Controlador PID.in_vc" as Connection63
+        connect "Controlador PID.in_vref" "Rate Transition1.out" as Connection64
+        connect "Rate Transition2.out" "Controlador PID.in_enabled" as Connection67
+        connect Junction5 Junction13 as Connection69
+        connect Junction13 Junction4 as Connection70
+        connect Rl0.n_node Junction13 as Connection71
+        connect Iload.n_node Junction14 as Connection72
+        connect Junction14 Junction7 as Connection73
+        connect Rl0.p_node Junction14 as Connection74
+        connect Goto8 Junction15 as Connection75
+        connect Junction15 SCADA_enable.out as Connection76
+        connect FEEDBACK_enable.in Junction15 as Connection77
+        connect From10 "Rate Transition2.in" as Connection78
+        connect SCADA_SP_trigger.out FEEDBACK_SP_trigger.in as Connection82
+        [
+            breakpoints = 8528, 7056
+        ]
+        connect Goto9 Junction16 as Connection84
+        connect Junction16 SCADA_vref.out as Connection85
+        connect FEEDBACK_vref.in Junction16 as Connection86
+        connect From11 "Rate Transition1.in" as Connection87
+        connect SCADA_ki.out Junction17 as Connection91
+        connect Junction17 FEEDBACK_ki.in as Connection92
+        [
+            breakpoints = 8536, 8112; 8536, 8088
+        ]
+        connect Goto11 Junction17 as Connection93
+        connect SCADA_kd.out Junction18 as Connection94
+        connect Junction18 FEEDBACK_kd.in as Connection95
+        [
+            breakpoints = 8536, 8248; 8536, 8176
+        ]
+        connect Goto12 Junction18 as Connection96
+        connect SCADA_kp.out Junction19 as Connection97
+        connect Junction19 FEEDBACK_kp.in as Connection98
+        [
+            breakpoints = 8536, 7960; 8536, 7928
+        ]
+        connect Goto10 Junction19 as Connection99
+        connect From12 "Controlador PID.in_kp" as Connection100
+        connect From13 "Controlador PID.in_ki" as Connection101
+        connect From14 "Controlador PID.in_kd" as Connection102
+        connect Goto4 Junction20 as Connection103
+        connect Junction20 "Controlador PID.out_acao_controle" as Connection104
+        connect FEEDBACK_acao.in Junction20 as Connection105
+        [
+            breakpoints = 9688, 7632; 9688, 7704
+        ]
+    }
+
+    default {
+        "core/C function" {
+            input_terminals = "real in;"
+            input_terminals_show_labels = "False;"
+            input_terminals_feedthrough = "True;"
+            input_terminals_dimensions = "inherit;"
+            output_terminals = "real out;"
+            output_terminals_show_labels = "False;"
+            output_terminals_feedthrough = "True;"
+            output_terminals_dimensions = "inherit;"
+            output_fnc = ""
+            update_fnc = ""
+            init_fnc = ""
+            global_variables = ""
+            parameters = ""
+            library_load_type = "Compile-time load"
+            dll_file_path = ""
+            dll_file_path_full = ""
+            arm_a9_file_path = ""
+            arm_a9_file_path_full = ""
+            arm_a53_file_path = ""
+            arm_a53_file_path_full = ""
+            h_file_path = ""
+            h_file_path_full = ""
+            add_src_path = ""
+            add_src_path_full = ""
+            convert_to_relative_dll = "True"
+            convert_to_relative_a = "True"
+            convert_to_relative_src = "True"
+            arb_defs = ""
+            add_macros = ""
+            skip_pre_cmpl_check = "False"
+            generate_for_hil = "True"
+            execution_rate = "inherit"
+            _supported_platforms = "[\'generic\']"
+            refresh = "refresh"
+        }
+
+        "core/Capacitor" {
+            signal_access = "inherit"
+            capacitance = "1e-6"
+            initial_voltage = "0"
+            pole_shift_ignore = "False"
+            visible = "True"
+        }
+
+        "core/Digital Probe" {
+            signal_access = "inherit"
+            override_signal_name = "False"
+            signal_name = ""
+            streaming_en = "False"
+            addr = "0"
+            streaming_er_idx = "0"
+            execution_rate = "inherit"
+        }
+
+        "core/Inductor" {
+            signal_access = "inherit"
+            inductance = "1e-3"
+            initial_current = "0.0"
+            pole_shift_ignore = "False"
+            visible = "True"
+        }
+
+        "core/Probe" {
+            signal_access = "inherit"
+            addr = "0"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "generic"
+            streaming_en = "False"
+            streaming_er_idx = "0"
+            execution_rate = "inherit"
+        }
+
+        "core/Resistor" {
+            resistance = "1"
+            param_set = ""
+        }
+
+        "core/SCADA Input" {
+            addr = "0"
+            format = "real"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "real"
+            min = "-1e6"
+            max = "1e6"
+            def_value = "0"
+            unit = " "
+            execution_rate = "100e-6"
+        }
+
+        "core/Current Measurement" {
+            signal_access = "inherit"
+            bw_limit = "False"
+            frequency = "10e3"
+            comparator_enable = "False"
+            operator = "greater"
+            threshold = "0"
+            cmp_abs_value = "False"
+            feed_forward = "false"
+            sig_output = "False"
+            sig_output_filt_and_full_bw = "False"
+            execution_rate = "100e-6"
+            addr = "0"
+            nd_msr_estimation = "false"
+            dev_cpl_msr = "false"
+            host_device = "0"
+            output_to_device = "0"
+            dev_cpl_index = "0"
+            dev_cpl_var_nb = "0"
+            visible = "True"
+            override_signal_name = "False"
+            signal_name = ""
+        }
+
+        "core/Rate Transition" {
+            init_value = "0.0"
+            execution_rate = "100e-6"
+            _supported_platforms = "[\'generic\']"
+        }
+
+        "core/Signal Controlled Voltage Source" {
+            execution_rate = "inherit"
+        }
+
+        "core/Single Pole Single Throw Contactor" {
+            signal_access = "inherit"
+            ctrl_src = "Digital input"
+            Sa = "1"
+            Sa_logic = "active high"
+            enable_fb_out = "False"
+            fb_out_type = "real"
+            execution_rate = "inherit"
+            initial_state = "off"
+            on_delay = "0"
+            off_delay = "0"
+            switching = "any current"
+            hide_int_meas = "False"
+        }
+
+        "core/Voltage Measurement" {
+            signal_access = "inherit"
+            bw_limit = "False"
+            frequency = "10e3"
+            comparator_enable = "False"
+            operator = "greater"
+            threshold = "0"
+            cmp_abs_value = "False"
+            feed_forward = "false"
+            sig_output = "False"
+            sig_output_filt_and_full_bw = "False"
+            execution_rate = "100e-6"
+            addr = "0"
+            nd_msr_estimation = "false"
+            dev_cpl_msr = "false"
+            host_device = "0"
+            output_to_device = "0"
+            dev_cpl_index = "0"
+            dev_cpl_var_nb = "0"
+            visible = "True"
+            override_signal_name = "False"
+            signal_name = ""
+        }
+    }
+
+    CODE model_init
+        # Numpy module is imported as 'np'
+        # Scipy module is imported as 'sp'
+        # The Schematic API is imported as 'mdl'
+        # To get the model file path, use 'mdl.get_model_file_path()'
+        # To print information to the console, use info()
+        
+        F = 10000;
+        TS = 0.0001;
+        TS_scada = 1/100.0;
+    ENDCODE
+}

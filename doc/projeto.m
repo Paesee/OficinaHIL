@@ -20,13 +20,6 @@ s = tf('s');
 % frequencia de discretizacao do controlador
 fc = 10e3;
 tsc = 1/fc;
-% frequencia de discretizacao da planta
-f  = 1000*fc;
-ts = 1/f;
-% tempo para simulacao
-t_inicial = 0;
-t_final = 1; 
-vetor_tempo = t_inicial:ts:t_final;
 
 %% definicao do Filtro LCR em espa√ßo de estados
 
@@ -45,11 +38,6 @@ B  = [ 1/L1;
 C = [0 1]; %escolhendo "ver" a tensao sobre o capacitor C1
 % matriz de transicao direta
 D  = 0;
-% definicao do espaco de estados
-FILTRO_LCR_ss       = ss(A,B,C,D);
-% definicao do espaco de estados no dominio do tempo discreto
-[Ad,Bd,Cd,Dd,tz]    = ssdata(c2d(FILTRO_LCR_ss,ts)); 
-FILTRO_LCR_ssd      = ss(Ad,Bd,Cd,Dd);
 
 %% extracao das funcoes de transferencia
 
@@ -63,24 +51,16 @@ o projeto quando o sistema possui apenas 1 entrada.
 VC_tf       = minreal(tf(num, den));
 
 %% definicao do controlador PID
-kp = 5.05;
-ki = 5;
-kd = 0.05;
-PID1 = kp + ki/s + kd * s;
 % controlador sintonizado no sisotool
-%PID  = 1.7735e-5 * (s+40)*(s+3800)*(1/s);
 PID  = 9.5e-6 * (s+10700)*(s+1000)*(1/s);
 PIDd = minreal(c2d(PID, tsc, 'tustin'));
-[num, den] = tfdata(PIDd, 'v');
 
 %% definicao da malha de controle
-
 % malha aberta
 VC_malha_aberta = PID * VC_tf;
 % malha fechada
 VC_malha_fechada = minreal(VC_malha_aberta / (1 + VC_malha_aberta)); 
-
-%discretizacao da malha
+% discretizacao da malha fechada
 VC_malha_fechadad = minreal(c2d(VC_malha_fechada, tsc, 'tustin'));
 
 % plot dos polos e zeros de malha fechada
@@ -89,14 +69,20 @@ pzmap(VC_malha_fechadad);
 xlim([-1.1 +1.1]);
 ylim([-1.1 +1.1]);
 
+% resposta temporal da malha de controle
 figure(2)
 step(VC_malha_fechada);
 
-ts = 1/2000;
-kp1 = 5.05;
-ki1 = 5 * ts * 1/2;
-kd1 = 0.05 * 2 * 1/ts;
-
-k1 = kp1 + ki1 + kd1
-k2 = 2 * ki1 - 2 * kd1
-k3 = -kp1+ ki1 + kd1
+%% "Prova real" para ver se nossos c·lculos estao certos...
+% Pegar K1, K2 e K3 da funcao de transferencia do PID (em funcao de s)
+kd = 9.5e-6;
+kp = 0.1112;
+ki = 101.7;
+% Calcula os valores "discretizados" dos ganhos
+kp1 = kp;
+ki1 = ki * tsc * 1/2;
+kd1 = kd * 2 * 1/tsc;
+% Testa os valores ver se sao igual a K1, K2 e K3 do PIDd
+k1 = kp1 + ki1 + kd1;
+k2 = 2 * ki1 - 2 * kd1;
+k3 = -kp1+ ki1 + kd1;
