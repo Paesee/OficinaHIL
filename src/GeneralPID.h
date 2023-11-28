@@ -3,31 +3,29 @@
 
 typedef struct GeneralPID
 {
-  // setpoint for control routine
+  // setpoint
   float setpoint;
-  // sampling time
+  // tempo de amostragem
   float sampling_time;
-  // PID gains
+  // ganhos do PID
   float KP;
   float KI;
   float KD;
-  // Gains definition
+  // ganhos auxiliares
   float K1;
   float K2;
   float K3;
-  float K1_anti_windup;
-  float K2_anti_windup;
-  float K3_anti_windup;
-  // variables used to store past erros and outputs
+  // variaveis para armazenar os ultimos erros
   float error_n1;
   float error_n2;
   float output_n1;
   float output_n2;
-  // max output values
+  // determinacao dos limites de saida da malha
   float max_output;
   float min_output;
 } GeneralPID;
 
+// definicao das funcoes
 void PID_init(GeneralPID *self, float sampling_time, float kp, float ki, float kd);
 void PID_setGains(GeneralPID *self, float kp, float ki, float kd);
 void PID_setMatlabGains(GeneralPID *self, float K1, float K2, float K3);
